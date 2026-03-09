@@ -5,30 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Solar Pro Calc | 太陽能專業試算</title>
     <style>
-        :root { --primary: #1b5e20; --accent: #fbc02d; --bg: #f8faf8; }
-        body { font-family: 'Segoe UI', 'PingFang TC', 'Microsoft JhengHei', sans-serif; background-color: var(--bg); display: flex; justify-content: center; padding: 20px; margin: 0; }
-        .container { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); width: 100%; max-width: 480px; position: relative; }
-        .lang-switch { position: absolute; top: 20px; right: 20px; background: #f0f0f0; border: none; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-size: 13px; font-weight: bold; transition: 0.3s; }
-        .lang-switch:hover { background: var(--primary); color: white; }
-        h2 { text-align: center; color: var(--primary); margin-top: 10px; margin-bottom: 5px; }
-        p.tagline { text-align: center; font-size: 13px; color: #666; margin-bottom: 25px; }
-        .input-group { margin-bottom: 22px; }
-        label { display: block; font-weight: 600; margin-bottom: 10px; color: #444; font-size: 15px; }
-        .flex-input { display: flex; gap: 12px; }
-        input, select { padding: 15px; border: 2px solid #eaeaea; border-radius: 12px; font-size: 16px; box-sizing: border-box; transition: 0.3s; }
-        input { flex: 2; background: #fff; }
-        select { flex: 1; background: #fafafa; cursor: pointer; }
-        input:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 10px rgba(27,94,32,0.1); }
-        .result-card { background: #e8f5e9; border-radius: 18px; padding: 25px; margin-top: 30px; display: none; border: 1px solid #c8e6c9; animation: fadeIn 0.5s; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .result-row { display: flex; justify-content: space-between; padding: 14px 0; border-bottom: 1px dashed #bdd7be; }
-        .result-row:last-of-type { border-bottom: none; }
-        .label-text { font-size: 15px; color: #555; }
-        .value-text { font-weight: 700; color: var(--primary); font-size: 18px; }
-        .highlight { color: #d32f2f; font-size: 24px; }
-        .btn-contact { display: block; width: 100%; padding: 18px; background: #00b900; color: white; text-align: center; text-decoration: none; border-radius: 12px; margin-top: 25px; font-weight: bold; font-size: 18px; box-shadow: 0 4px 15px rgba(0,185,0,0.3); transition: 0.3s; }
-        .btn-contact:hover { background: #009900; transform: translateY(-2px); }
-        .footer { font-size: 11px; color: #999; text-align: center; margin-top: 25px; line-height: 1.6; }
+        :root { --primary: #1b5e20; --bg: #f8faf8; --line: #00b900; --submit: #1a73e8; }
+        body { font-family: 'Segoe UI', 'PingFang TC', sans-serif; background-color: var(--bg); display: flex; justify-content: center; padding: 20px; margin: 0; }
+        .container { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); width: 100%; max-width: 480px; }
+        .lang-switch { float: right; background: #eee; border: none; padding: 6px 12px; border-radius: 20px; cursor: pointer; font-size: 12px; }
+        h2 { text-align: center; color: var(--primary); margin-top: 30px; }
+        .input-group { margin-bottom: 12px; }
+        label { display: block; font-weight: 600; margin-bottom: 5px; color: #444; font-size: 14px; }
+        .flex-input { display: flex; gap: 10px; }
+        input, select { padding: 12px; border: 2px solid #efefef; border-radius: 10px; font-size: 15px; box-sizing: border-box; width: 100%; }
+        select { width: 100px; }
+        .result-card { background: #e8f5e9; border-radius: 15px; padding: 20px; margin-top: 20px; display: none; border: 1px solid #c8e6c9; }
+        .result-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed #bdd7be; }
+        .value-text { font-weight: 700; color: var(--primary); }
+        .contact-form { margin-top: 20px; padding-top: 20px; border-top: 1px solid #eee; }
+        .btn-line { display: block; padding: 14px; background: var(--line); color: white; text-align: center; text-decoration: none; border-radius: 10px; font-weight: bold; margin-bottom: 15px; }
+        .btn-submit { display: block; width: 100%; padding: 15px; background: var(--submit); color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; }
+        .btn-submit:disabled { background: #ccc; }
+        .footer { font-size: 11px; color: #aaa; text-align: center; margin-top: 20px; }
     </style>
 </head>
 <body>
@@ -36,82 +30,58 @@
 <div class="container">
     <button class="lang-switch" onclick="toggleLang()" id="langBtn">English</button>
     <h2 id="title">☀️ 太陽能專業試算</h2>
-    <p class="tagline" id="tagline">需求導向與面積優化邏輯</p>
     
     <div class="input-group">
-        <label id="lblArea">屋頂可用面積 (Available Area)</label>
+        <label id="lblArea">屋頂可用面積</label>
         <div class="flex-input">
-            <input type="number" id="areaInput" placeholder="輸入數值" oninput="calculate()">
+            <input type="number" id="areaInput" placeholder="數值" oninput="calculate()">
             <select id="unitSelect" onchange="calculate()">
                 <option value="sqm">m²</option>
                 <option value="rai">Rai (萊)</option>
-                <option value="wah">Sq. Wah</option>
             </select>
         </div>
     </div>
 
     <div class="input-group">
-        <label id="lblBill">每月電費 (Monthly Bill - THB)</label>
+        <label id="lblBill">每月電費 (THB)</label>
         <input type="number" id="bill" placeholder="例如: 10000" oninput="calculate()">
     </div>
 
     <div id="resultCard" class="result-card">
         <div class="result-row">
-            <span id="resCap" class="label-text">建議安裝容量</span>
+            <span id="resCap">建議安裝容量</span>
             <span class="value-text"><span id="capValue">0</span> kWp</span>
         </div>
         <div class="result-row">
-            <span id="resSave" class="label-text">每月預計省下</span>
-            <span class="value-text highlight">฿ <span id="saveValue">0</span></span>
+            <span id="resSave">每月預計省下</span>
+            <span class="value-text">฿ <span id="saveValue">0</span></span>
         </div>
-        <div class="result-row">
-            <span id="resPayback" class="label-text">預計回本時間</span>
-            <span class="value-text"><span id="paybackValue">0</span> <span id="unitYear">年</span></span>
+
+        <a href="https://line.me/ti/p/@408yfpyu" target="_blank" class="btn-line">LINE 諮詢</a>
+
+        <div class="contact-form" id="contactForm">
+            <p style="font-size: 13px; color: #666; margin-bottom: 12px; font-weight: bold;" id="noLineMsg">留下聯絡資訊，由專人為您服務：</p>
+            <div class="input-group">
+                <input type="text" id="custName" placeholder="姓名 / Name">
+            </div>
+            <div class="input-group">
+                <input type="tel" id="custPhone" placeholder="電話 / Phone Number">
+            </div>
+            <div class="input-group">
+                <input type="email" id="custEmail" placeholder="Email Address">
+            </div>
+            <button class="btn-submit" onclick="submitToSheet()" id="btnSubmit">送出資料 / Submit</button>
         </div>
-        
-        <a href="https://line.me/ti/p/@408yfpyu" target="_blank" class="btn-contact" id="btnContact">
-            獲取專業報價
-        </a>
     </div>
 
     <div class="footer" id="footerMsg">
-        * 1 Rai = 1,600 m² | 1 Sq. Wah = 4 m²<br>
-        * 計算邏輯：取「屋頂面積極限」與「每月用電需求」之最小值。
+        * 1 Rai = 1,600 m²。系統取面積與電費需求之最小值計算。
     </div>
 </div>
 
 <script>
 let currentLang = 'zh';
-const translations = {
-    zh: {
-        btn: "English", title: "☀️ 太陽能專業試算", tagline: "需求導向與面積優化邏輯",
-        lblArea: "屋頂可用面積 (Available Area)", lblBill: "每月電費 (Monthly Bill - THB)",
-        resCap: "建議安裝容量", resSave: "每月預計省下", resPayback: "預計回本時間", unitYear: "年",
-        btnContact: "獲取專業報價", footer: "* 1 Rai = 1,600 m² | 1 Sq. Wah = 4 m²<br>* 計算邏輯：取「屋頂面積極限」與「每月用電需求」之最小值。"
-    },
-    en: {
-        btn: "中文", title: "☀️ Solar Expert Pro", tagline: "Demand-Driven & Space Optimized",
-        lblArea: "Available Area", lblBill: "Monthly Bill (THB)",
-        resCap: "Optimal Capacity", resSave: "Est. Monthly Savings", resPayback: "Payback Period", unitYear: "Years",
-        btnContact: "Get Professional Quote", footer: "* 1 Rai = 1,600 m² | 1 Sq. Wah = 4 m²<br>* Optimization: Uses the minimum of roof capacity and consumption needs."
-    }
-};
-
-function toggleLang() {
-    currentLang = currentLang === 'zh' ? 'en' : 'zh';
-    const t = translations[currentLang];
-    document.getElementById('langBtn').innerText = t.btn;
-    document.getElementById('title').innerText = t.title;
-    document.getElementById('tagline').innerText = t.tagline;
-    document.getElementById('lblArea').innerText = t.lblArea;
-    document.getElementById('lblBill').innerText = t.lblBill;
-    document.getElementById('resCap').innerText = t.resCap;
-    document.getElementById('resSave').innerText = t.resSave;
-    document.getElementById('resPayback').innerText = t.resPayback;
-    document.getElementById('unitYear').innerText = t.unitYear;
-    document.getElementById('btnContact').innerText = t.btnContact;
-    document.getElementById('footerMsg').innerHTML = t.footer;
-}
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyBPpfxtmbrrb2ufR9Fu82GdYIcHXFMl1PSkZUdNtCD6AOFWcOJwObdvL83vseNi3nxUA/exec"; // 👈 請務必替換成您的 Google 腳本網址
 
 function calculate() {
     const val = parseFloat(document.getElementById('areaInput').value) || 0;
@@ -119,34 +89,70 @@ function calculate() {
     const bill = parseFloat(document.getElementById('bill').value) || 0;
     const resultCard = document.getElementById('resultCard');
 
-    let areaSqm = val;
-    if (unit === 'rai') areaSqm = val * 1600;
-    if (unit === 'wah') areaSqm = val * 4;
+    let areaSqm = unit === 'rai' ? val * 1600 : val;
 
     if (areaSqm > 0 && bill > 0) {
         resultCard.style.display = 'block';
-        const daily_sun = 4.5;
-        const rate = 4.4;
-        const eff = 0.82; 
         
-        const capByArea = areaSqm / 7;
-        const capByBill = (bill * 0.9) / (daily_sun * 30 * eff * rate);
-        
-        const optimalCap = Math.min(capByArea, capByBill);
-        const monthlySavings = optimalCap * daily_sun * 30 * eff * rate;
-        
-        let costPerKw = 28000;
-        if (optimalCap >= 300) costPerKw = 24000;
-        if (optimalCap >= 750) costPerKw = 22000;
-        
-        const paybackYears = (optimalCap * costPerKw) / (monthlySavings * 12);
+        // 核心邏輯
+        const cap = Math.min(areaSqm / 7, (bill * 0.9) / (4.5 * 30 * 0.82 * 4.4));
+        const savings = cap * 4.5 * 30 * 0.82 * 4.4;
 
-        document.getElementById('capValue').innerText = optimalCap.toFixed(2);
-        document.getElementById('saveValue').innerText = Math.round(monthlySavings).toLocaleString();
-        document.getElementById('paybackValue').innerText = paybackYears.toFixed(1);
+        document.getElementById('capValue').innerText = cap.toFixed(2);
+        document.getElementById('saveValue').innerText = Math.round(savings).toLocaleString();
     } else {
         resultCard.style.display = 'none';
     }
+}
+
+function submitToSheet() {
+    const btn = document.getElementById('btnSubmit');
+    const data = {
+        name: document.getElementById('custName').value,
+        phone: document.getElementById('custPhone').value,
+        email: document.getElementById('custEmail').value,
+        areaValue: document.getElementById('areaInput').value,
+        unit: document.getElementById('unitSelect').value,
+        bill: document.getElementById('bill').value,
+        capacity: document.getElementById('capValue').innerText
+    };
+
+    if (!data.name || !data.phone || !data.email) {
+        alert(currentLang === 'zh' ? "請填寫姓名、電話與 Email" : "Please fill in Name, Phone and Email");
+        return;
+    }
+
+    btn.innerText = currentLang === 'zh' ? "傳送中..." : "Sending...";
+    btn.disabled = true;
+
+    fetch(SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        body: JSON.stringify(data)
+    }).then(() => {
+        alert(currentLang === 'zh' ? "感謝！資料已成功送出。" : "Thank you! Your data has been submitted.");
+        btn.innerText = currentLang === 'zh' ? "已完成" : "Completed";
+    }).catch(err => {
+        alert("Error: " + err);
+        btn.disabled = false;
+    });
+}
+
+function toggleLang() {
+    currentLang = currentLang === 'zh' ? 'en' : 'zh';
+    const t = {
+        zh: { title: "☀️ 太陽能專業試算", lblArea: "屋頂可用面積", lblBill: "每月電費 (THB)", resCap: "建議安裝容量", resSave: "每月預計省下", noLineMsg: "留下聯絡資訊，由專人為您服務：", btnSubmit: "送出資料 / Submit" },
+        en: { title: "☀️ Solar Pro Calc", lblArea: "Available Area", lblBill: "Monthly Bill (THB)", resCap: "Rec. Capacity", resSave: "Monthly Savings", noLineMsg: "Leave your contact info for a consultant:", btnSubmit: "Submit Information" }
+    };
+    const lang = t[currentLang];
+    document.getElementById('title').innerText = lang.title;
+    document.getElementById('lblArea').innerText = lang.lblArea;
+    document.getElementById('lblBill').innerText = lang.lblBill;
+    document.getElementById('resCap').innerText = lang.resCap;
+    document.getElementById('resSave').innerText = lang.resSave;
+    document.getElementById('noLineMsg').innerText = lang.noLineMsg;
+    document.getElementById('btnSubmit').innerText = lang.btnSubmit;
+    document.getElementById('langBtn').innerText = currentLang === 'zh' ? "English" : "中文";
 }
 </script>
 </body>
