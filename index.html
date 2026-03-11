@@ -95,7 +95,7 @@ function calculate() {
         resultCard.style.display = 'block';
         
         // 核心邏輯
-        const cap = Math.min(areaSqm / 7, (bill * 0.9) / (4.5 * 30 * 0.82 * 4.4));
+        const cap = Math.min(areaSqm / 7, (bill * 0.5) / (4.5 * 30 * 0.82 * 4.4));
         const savings = cap * 4.5 * 30 * 0.82 * 4.4;
 
         document.getElementById('capValue').innerText = cap.toFixed(2);
@@ -158,3 +158,4 @@ function toggleLang() {
 </body>
 
 </html>
+
